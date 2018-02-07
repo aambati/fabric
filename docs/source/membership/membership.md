@@ -74,7 +74,7 @@ As you can see, there are nine elements to an MSP. It's easiest to think of thes
 
 Let's describe these folders in a little more detail and see why they are important.
 
-1. **Root CAs:** This folder contains a list of self-signed X.509 certificates of
+1. Root CAs: This folder contains a list of self-signed X.509 certificates of
    the Root CAs trusted by this organization. There must be at least one Root CA X.509
    certificate in this MSP folder.
 
@@ -82,7 +82,7 @@ Let's describe these folders in a little more detail and see why they are import
    certificates must be derived to be considered members of this organization.
 
 
-2. **Intermediate CAs:** This folder contains a list of X.509 certificates of the
+2. Intermediate CAs: This folder contains a list of X.509 certificates of the
    Intermediate CAs trusted by this organization. Each certificate must be signed by
    one of the Root CAs in the MSP or by an Intermediate CA -- or a chain of ICAs --
    that ultimately lead back to a trusted Root CA. It is possible to have a functioning
@@ -94,7 +94,7 @@ Let's describe these folders in a little more detail and see why they are import
    the Root CA folder, because it's not the **root** of trusted membership.
 
 
-3. **Organizational Units (OUs):** These are listed in the `$FABRIC_CFG_PATH/msp/config.yaml`
+3. Organizational Units (OUs): These are listed in the `$FABRIC_CFG_PATH/msp/config.yaml`
    file and contain a list of organizational units that are considered to be part of the
    MSP. This is particularly useful when you want to restrict membership to only those
    principals who are part of a particular organization (as will be the case when an
@@ -105,7 +105,7 @@ Let's describe these folders in a little more detail and see why they are import
    members of the organization.
 
 
-4. **Administrators:** This folder contains a list of X.509 certificates that define the
+4. Administrators: This folder contains a list of X.509 certificates that define the
    principals who have the role of administrators of this organization. Typically there
    should be one or more certificates in this list.
 
@@ -132,7 +132,7 @@ Let's describe these folders in a little more detail and see why they are import
    Florida entitles someone to drive in every state in the US.
 
 
-5. **Revoked Certificates:** If the X.509 certificate of a principal has been revoked,
+5. Revoked Certificates: If the X.509 certificate of a principal has been revoked,
    identifying information about the cert -- not the cert itself -- is held in this folder.
    These identifiers -- known as a Subject Key Identifier (SKI) and Authority Access
    Identifier (AKI) -- are checked whenever a certificate is being used to make sure the
@@ -147,7 +147,7 @@ Let's describe these folders in a little more detail and see why they are import
    This "list of lists" is optional. It will only become populated as certificates are revoked.
 
 
-6. **Signing Certificate:** This folder contains the **public X.509 certificate** used by a
+6. Signing Certificate: This folder contains the **public X.509 certificate** used by a
    node or user when they need to identify themselves to another principal in the network.
    This is the certificate a peer places in a transaction proposal response, for example,
    to indicate that a peer's organization has endorsed it -- which can subsequently be checked
@@ -158,7 +158,7 @@ Let's describe these folders in a little more detail and see why they are import
    for the node. It is not used for global MSPs.
 
 
-7. **KeyStore for Private Key:** This folder is defined for the local MSP of a peer or
+7. KeyStore for Private Key: This folder is defined for the local MSP of a peer or
    orderer node (or in a user's local MSP), and contains the **private key**. This key
    is used to sign or encrypt data -- for example to sign a transaction proposal response,
    indicating that a peer's organization has endorsed it.
@@ -171,7 +171,7 @@ Let's describe these folders in a little more detail and see why they are import
    they are shared across the network or channel.
 
 
-8. **TLS Root CA:** This folder contains a list of self-signed X.509 certificates of the
+8. TLS Root CA: This folder contains a list of self-signed X.509 certificates of the
    Root CAs trusted by this organization **for TLS communications**. An example of a TLS
    communication would be when a peer needs to connect to an orderer so that it can receive
    ledger updates.
@@ -182,7 +182,7 @@ Let's describe these folders in a little more detail and see why they are import
    There must be at least one TLS Root CA X.509 certificate in this MSP folder.
 
 
-9. **TLS Intermediate CA:** This folder contains a list of X.509 certificates of the
+9. TLS Intermediate CA: This folder contains a list of X.509 certificates of the
    Intermediate CAs trusted by this organization **for TLS communications**.
 
    By analogy to the TLS Root CA folder, this folder is kept separate to the MSP Intermediate
