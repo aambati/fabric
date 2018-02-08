@@ -74,88 +74,88 @@ As you can see, there are nine elements to an MSP. It's easiest to think of thes
 
 Let's describe these folders in a little more detail and see why they are important.
 
-1. **Root CAs:** This folder contains a list of self-signed X.509 certificates of
-   the Root CAs trusted by this organization. There must be at least one Root CA X.509
-   certificate in this MSP folder.
+1.    **Root CAs:** This folder contains a list of self-signed X.509 certificates of
+      the Root CAs trusted by this organization. There must be at least one Root CA X.509
+      certificate in this MSP folder.
 
-   This is the most important folder because it identifies the CAs from which all other
-   certificates must be derived to be considered members of this organization.
-
-
-2. **Intermediate CAs:** This folder contains a list of X.509 certificates of the
-   Intermediate CAs trusted by this organization. Each certificate must be signed by
-   one of the Root CAs in the MSP or by an Intermediate CA -- or a chain of ICAs --
-   that ultimately lead back to a trusted Root CA. It is possible to have a functioning
-   network that does not have any Intermediate CAs, in which case this folder would be
-   empty. However, this is not a best practice.
-
-   Like the Root CA folder, this folder defines the CAs from which certificates must be
-   issued to be considered members of the organization. It's slightly less important than
-   the Root CA folder, because it's not the **root** of trusted membership.
+      This is the most important folder because it identifies the CAs from which all other
+      certificates must be derived to be considered members of this organization.
 
 
-3. **Organizational Units (OUs):** These are listed in the `$FABRIC_CFG_PATH/msp/config.yaml`
-   file and contain a list of organizational units that are considered to be part of the
-   MSP. This is particularly useful when you want to restrict membership to only those
-   principals who are part of a particular organization (as will be the case when an
-   organization has a rich structure).
+2.    **Intermediate CAs:** This folder contains a list of X.509 certificates of the
+      Intermediate CAs trusted by this organization. Each certificate must be signed by
+      one of the Root CAs in the MSP or by an Intermediate CA -- or a chain of ICAs --
+      that ultimately lead back to a trusted Root CA. It is possible to have a functioning
+      network that does not have any Intermediate CAs, in which case this folder would be
+      empty. However, this is not a best practice.
 
-   Specifying OUs is optional. If no OUs are listed, all of the principals that are part of
-   an MSP -- as identified by the Root CA and Intermediate CA folders -- will be considered
-   members of the organization.
-
-
-4. **Administrators:** This folder contains a list of X.509 certificates that define the
-   principals who have the role of administrators of this organization. Typically there
-   should be one or more certificates in this list.
-
-   It's worth noting that just because a principal has the role of an administrator it doesn't
-   mean that they can administer particular resources! This seems strange, but will make more
-   sense after you learn about the nature of policy permissions and how those permissions --
-   and not a principal's "role" -- are what define what any given organization's administrators
-   can actually do. For example, a channel policy might specify that `MITCHELL.MANUFACTURING`
-   administrators have the rights to add new organizations to the channel, whereas the
-   `MITCHELL.DISTRIBUTION` administrators have no such rights.
-
-   Even though an X.509 certificate has a `ROLE` attribute (specifying, for example, that a
-   principal is an `admin`), this refers to a principal's role within its organization
-   rather than on the blockchain network. This is distinctly different from the purpose of
-   the `OU` attribute, which -- if it has been defined -- refers to a principal's place in
-   the network. Indeed, this is why we need the Administrators folder - because the
-   blockchain role is quite different to the X.509 `ROLE`.
-
-   The `ROLE` attribute **can** be used to confer administrative rights at the channel level
-   if the policy for that channel has been written to allow any administrator from an organization
-   (or certain organizations) permission to perform certain channel functions (such as
-   instantiating chaincode). In this way, an organization role can confer a network role.
-   This is conceptually similar to how having a driver's license issued by the US state of
-   Florida entitles someone to drive in every state in the US.
+      Like the Root CA folder, this folder defines the CAs from which certificates must be
+      issued to be considered members of the organization. It's slightly less important than
+      the Root CA folder, because it's not the **root** of trusted membership.
 
 
-5. **Revoked Certificates:** If the X.509 certificate of a principal has been revoked,
-   identifying information about the cert -- not the cert itself -- is held in this folder.
-   These identifiers -- known as a Subject Key Identifier (SKI) and Authority Access
-   Identifier (AKI) -- are checked whenever a certificate is being used to make sure the
-   certificate is still valid.
+3.    **Organizational Units (OUs):** These are listed in the `$FABRIC_CFG_PATH/msp/config.yaml`
+      file and contain a list of organizational units that are considered to be part of the
+      MSP. This is particularly useful when you want to restrict membership to only those
+      principals who are part of a particular organization (as will be the case when an
+      organization has a rich structure).
 
-   This list is conceptually the same as a CA's Certificate Revocation List (CRL), but relates
-   to revocation of membership from the organization rather than revocation from the CA. As a
-   result, the administrator of an MSP, local or global, can quickly revoke a principal from
-   an organization without having to resort to revoking their certificate from a CA -- which,
-   of course, might not be appropriate.
-
-   This "list of lists" is optional. It will only become populated as certificates are revoked.
+      Specifying OUs is optional. If no OUs are listed, all of the principals that are part of
+      an MSP -- as identified by the Root CA and Intermediate CA folders -- will be considered
+      members of the organization.
 
 
-6. **Signing Certificate:** This folder contains the **public X.509 certificate** used by a
-   node or user when they need to identify themselves to another principal in the network.
-   This is the certificate a peer places in a transaction proposal response, for example,
-   to indicate that a peer's organization has endorsed it -- which can subsequently be checked
-   against an endorsement policy (containing the organizations that must endorse a transaction)
-   by a validating node.
+4.    **Administrators:** This folder contains a list of X.509 certificates that define the
+      principals who have the role of administrators of this organization. Typically there
+      should be one or more certificates in this list.
 
-   This folder is mandatory for local MSPs, and there must be exactly one X.509 certificate
-   for the node. It is not used for global MSPs.
+      It's worth noting that just because a principal has the role of an administrator it doesn't
+      mean that they can administer particular resources! This seems strange, but will make more
+      sense after you learn about the nature of policy permissions and how those permissions --
+      and not a principal's "role" -- are what define what any given organization's administrators
+      can actually do. For example, a channel policy might specify that `MITCHELL.MANUFACTURING`
+      administrators have the rights to add new organizations to the channel, whereas the
+      `MITCHELL.DISTRIBUTION` administrators have no such rights.
+
+      Even though an X.509 certificate has a `ROLE` attribute (specifying, for example, that a
+      principal is an `admin`), this refers to a principal's role within its organization
+      rather than on the blockchain network. This is distinctly different from the purpose of
+      the `OU` attribute, which -- if it has been defined -- refers to a principal's place in
+      the network. Indeed, this is why we need the Administrators folder - because the
+      blockchain role is quite different to the X.509 `ROLE`.
+
+      The `ROLE` attribute **can** be used to confer administrative rights at the channel level
+      if the policy for that channel has been written to allow any administrator from an organization
+      (or certain organizations) permission to perform certain channel functions (such as
+      instantiating chaincode). In this way, an organization role can confer a network role.
+      This is conceptually similar to how having a driver's license issued by the US state of
+      Florida entitles someone to drive in every state in the US.
+
+
+5.    **Revoked Certificates:** If the X.509 certificate of a principal has been revoked,
+      identifying information about the cert -- not the cert itself -- is held in this folder.
+      These identifiers -- known as a Subject Key Identifier (SKI) and Authority Access
+      Identifier (AKI) -- are checked whenever a certificate is being used to make sure the
+      certificate is still valid.
+
+      This list is conceptually the same as a CA's Certificate Revocation List (CRL), but relates
+      to revocation of membership from the organization rather than revocation from the CA. As a
+      result, the administrator of an MSP, local or global, can quickly revoke a principal from
+      an organization without having to resort to revoking their certificate from a CA -- which,
+      of course, might not be appropriate.
+
+      This "list of lists" is optional. It will only become populated as certificates are revoked.
+
+
+6.    **Signing Certificate:** This folder contains the **public X.509 certificate** used by a
+      node or user when they need to identify themselves to another principal in the network.
+      This is the certificate a peer places in a transaction proposal response, for example,
+      to indicate that a peer's organization has endorsed it -- which can subsequently be checked
+      against an endorsement policy (containing the organizations that must endorse a transaction)
+      by a validating node.
+
+      This folder is mandatory for local MSPs, and there must be exactly one X.509 certificate
+      for the node. It is not used for global MSPs.
 
 
 7. **KeyStore for Private Key:** This folder is defined for the local MSP of a peer or
